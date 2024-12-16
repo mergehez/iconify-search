@@ -2,7 +2,6 @@
 @import "tailwindcss/components";
 @import "./assets/primevue/tailwind.css";
 @import "tailwindcss/utilities";
-@import "tooltip.css";
 @import "./components/ColorPicker/styles.css";
 
 

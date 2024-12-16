@@ -3,7 +3,7 @@
 import {TIcon, TIconSetWithIconData} from "../utils/types.ts";
 import {reactive, ref, watchEffect} from "vue";
 import {Button, Checkbox, Popover, Select, Textarea} from "primevue";
-import ColorPicker from './ColorPicker/index'
+import ColorPicker from "@mergehez/vue-color-picker"
 import IconSvg from "./IconSvg.vue";
 import {useToast} from 'primevue/usetoast';
 
@@ -90,7 +90,7 @@ function copy(str: string) {
                                         <Button label="current color" severity="info" class="py-0 mb-2" @click="svgInfo.color = 'currentColor'; refColorPopover?.toggle($event)"/>
 
                                     </div>
-                                    <ColorPicker v-model="svgInfo.color" :show-eye-dropper="true" :show-palette="true"/>
+                                    <ColorPicker v-model="svgInfo.color"/>
                                 </Popover>
                             </div>
                             <div class="flex items-center">

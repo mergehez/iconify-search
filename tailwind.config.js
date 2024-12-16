@@ -6,6 +6,7 @@ export default {
     content: [
         "./index.html",
         "./src/**/*.{vue,js,ts,jsx,tsx}",
+        "./node_modules/@mergehez/**/*.{css,js}",
     ],
     theme: {
         extend: {},

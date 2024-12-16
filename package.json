@@ -11,6 +11,7 @@
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
     "@iconify/tailwind": "^1.2.0",
+    "@mergehez/vue-color-picker": "^0.0.1",
     "ky": "^1.7.3",
     "pinia": "^2.3.0",
     "primevue": "^4.2.5",

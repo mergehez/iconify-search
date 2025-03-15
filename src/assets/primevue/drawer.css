@@ -59,7 +59,7 @@
 
 .p-drawer-full .p-drawer-enter-active,
 .p-drawer-full .p-drawer-leave-active {
-    @apply transition-opacity animate-duration-400 ease-[cubic-bezier(0.25,0.8,0.25,1)]
+    /*@apply transition-opacity duration--400 ease-[cubic-bezier(0.25,0.8,0.25,1)]*/
 }
 
 .p-drawer-left .p-drawer {

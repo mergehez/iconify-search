@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {TIcon, TIconSetWithIconData} from "../utils/types.ts";
 import {watch} from "vue";
-import IconSvg from "./IconSvg.vue";
+import {iconToSvgHtml} from "../utils/useIconView.ts";
 
 const props = defineProps<{
     index: number,
@@ -44,7 +44,7 @@ watch(() => props.color, () => {
     >
         <!--@click.prevent="copyToClipboard(icon)"-->
         <span v-if="index > 0 && icon.first" class="vr"></span>
-        <IconSvg :icon="icon" :collection="collection" :color="color"/>
+        <div v-html="iconToSvgHtml(icon, collection, {color})"></div>
 
         <span v-if="collection.id == 'fluent'" class="absolute top-1 right-1 text-2xs leading-none opacity-30">{{ icon.height ?? collection.data.height }}</span>
         <!--<span v-if="showCopied" class="absolute text-center text-xs leading-none text-green-50 py-1.5 px-1 bg-green-600 rounded-md">Copied!</span>-->

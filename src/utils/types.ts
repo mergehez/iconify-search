@@ -38,6 +38,15 @@ export type TIcon = {
     id: string;
     first: boolean
     body: string;
+    bodyWithTransform?: string;
+    transform?: {
+        attributeName: string | null
+        dur: string | null
+        from: string | null
+        repeatCount: string | null
+        to: string | null
+        type: string | null
+    };
     height?: number;
     width?: number;
     left?: number;
@@ -63,4 +72,14 @@ export type TSearchResultWithIconData = {
     request: {
         query: string,
     },
+}
+
+
+export type TFavIcon = {
+    collection: {
+        id: string;
+        height?: number;
+        width?: number;
+    },
+    icon: TIcon
 }

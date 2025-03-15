@@ -9,8 +9,10 @@ import InputText from "./components/InputText.vue";
 import {Button, Toast} from "primevue";
 import IconBox from "./components/IconBox.vue";
 import ModalFavSets from "./components/ModalFavSets.vue";
+import {useIconView} from "./utils/useIconView.ts";
+import ModalFavIcons from "./components/ModalFavIcons.vue";
 
-const query = ref('add')
+const query = ref('load')
 const res = ref<TSearchResultWithIconData>()
 const activeSetId = ref<string>()
 
@@ -42,7 +44,9 @@ function setActiveSetId(id: string) {
 }
 
 const favSets = useFavSets()
+// const favIcons = useFavIcons()
 const showFavSetsModal = ref(false)
+const showFavIconsModal = ref(false)
 onUnmounted(() => {
     setTimeout(() => {
         search()
@@ -53,16 +57,48 @@ const selection = ref<{
     icon: TIcon,
     collection: TIconSetWithIconData,
 }>()
+const iconView = useIconView();
 
 function selectIcon(icon: TIcon) {
     if (selection.value?.icon === icon) {
-        selection.value = undefined
+        iconView.clearIcon()
         return
     }
-    selection.value = {
-        icon,
-        collection: res.value!.collections.find(c => c.data.icons.includes(icon))!
+    iconView.options.animation = '-';
+    if(icon.body.includes('<animateTransform attributeName="transform" ')) {
+        const parsed = new DOMParser().parseFromString(icon.body, 'image/svg+xml')
+        const animate = parsed.querySelector('animateTransform')
+        if(!animate){
+            return;
+        }
+        animate.parentNode!.removeChild(animate);
+        icon.bodyWithTransform = icon.body
+        icon.body = parsed.documentElement.outerHTML
+        iconView.options.animation = 'animate-spin';
+        // example:
+        // <svg ...>
+        //    <path ...>
+        //      <animateTransform attributeName="transform" attributeType="XML" dur="560ms" from="0,12,12" repeatCount="indefinite" to="360,12,12" type="rotate"/>
+        //    </path>
+        // </svg>
+        // icon.transform = {
+        //     attributeName: animate.getAttribute('attributeName'),
+        //     dur: animate.getAttribute('dur'),
+        //     from: animate.getAttribute('from'),
+        //     repeatCount: animate.getAttribute('repeatCount'),
+        //     to: animate.getAttribute('to'),
+        //     type: animate.getAttribute('type'),
+        // }
+        //
+        // // convert to css: <animateTransform attributeName="transform" attributeType="XML" dur="560ms" from="0,12,12" repeatCount="indefinite" to="360,12,12" type="rotate"/>
+        // const css=  'transform: rotate(0deg); transition: transform 560ms linear;'
     }
+    // selection.value = {
+    //     icon,
+    //     collection: res.value!.collections.find(c => c.data.icons.includes(icon))!
+    // }
+    iconView.setIcon(icon, res.value!.collections.find(c => c.data.icons.includes(icon))!)
+    console.log(selection.value)
 }
 </script>
 
@@ -73,7 +109,10 @@ function selectIcon(icon: TIcon) {
             <Button type="submit" severity="secondary" size="small">Search</Button>
             <span>{{ res?.total }}</span>
         </form>
-        <Button severity="info" size="small" @click="showFavSetsModal = true" class="absolute right-4 top-3">fav sets</Button>
+        <div class="absolute right-4 top-3 flex gap-2">
+            <Button severity="info" size="small" @click="showFavIconsModal = true">fav icons</Button>
+            <Button severity="info" size="small" @click="showFavSetsModal = true">fav sets</Button>
+        </div>
 
         <template v-if="res">
             <div class="flex flex-wrap items-start overflow-auto gap-1 border-b border-neutral-600 pb-2 px-5">
@@ -109,16 +148,14 @@ function selectIcon(icon: TIcon) {
                     />
                 </template>
             </div>
-            <IconInfo
-                v-if="selection"
-                :icon="selection.icon"
-                :collection="selection.collection"
-                @close="selection = undefined"
-            />
+            <IconInfo />
         </template>
         <ModalFavSets
             v-model="showFavSetsModal"
             @saved="search"
+        />
+        <ModalFavIcons
+            v-model="showFavIconsModal"
         />
         <Toast/>
     </div>

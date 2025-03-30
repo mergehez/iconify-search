@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {Button, Dialog} from "primevue";
 import {useFavIcons} from "../utils/useFavIcons.ts";
-import {iconToSvgHtml} from "../utils/useIconView.ts";
+import {iconToSvgHtml, toTwClass} from "../utils/useIconView.ts";
 import {TFavIcon} from "../utils/types.ts";
 import {useToast} from "primevue/usetoast";
 
@@ -59,7 +59,7 @@ function unfav(ic: TFavIcon) {
                             <!--<div class="grid gap-2" style="grid-template-columns: repeat(3, max-content)">-->
                                 <Button severity="secondary" class="flex-1 text-sm px-2 py-1.5 leading-none" @click="copy(ic.icon.id)">{{ ic.icon.id }}</Button>
                                 <Button severity="secondary" class="flex-1 text-sm px-2 py-1.5 leading-none" @click="copy(`${ic.collection.id}--${ic.icon.id}`)">{{ ic.collection.id }}--{{ ic.icon.id }}</Button>
-                                <Button severity="secondary" class="flex-1 text-sm px-2 py-1.5 leading-none" @click="copy(`icon-[${ic.collection.id}--${ic.icon.id}]`)">icon-[{{ ic.collection.id }}--{{ ic.icon.id }}]</Button>
+                                <Button severity="secondary" class="flex-1 text-sm px-2 py-1.5 leading-none" @click="copy(toTwClass(ic))">{{ toTwClass(ic) }}</Button>
                             <!--</div>-->
                             <!--<i></i>-->
                             <Button severity="danger" class="text-sm px-2 py-1.5 leading-none" size="small" @click="unfav(ic)">Unfav</Button>

@@ -58,7 +58,7 @@ function onTwColorSelect(key: string, hex: string, shade: number){
                 -
                 <button class="text-base font-bold border border-surface-800 px-3 py-2 leading-none rounded-md" @click="copy(`${iconView.collection.id}--${iconView.icon.id}`)">{{ iconView.collection.id }}--{{ iconView.icon.id }}</button>
                 -
-                <button class="text-base font-bold border border-surface-800 px-3 py-2 leading-none rounded-md" @click="copy(`icon-[${iconView.collection.id}--${iconView.icon.id}]`)">icon-[{{ iconView.collection.id }}--{{ iconView.icon.id }}]</button>
+                <button class="text-base font-bold border border-surface-800 px-3 py-2 leading-none rounded-md" @click="copy(iconView.asTwClass)">{{ iconView.asTwClass }}</button>
                 <Button severity="secondary" size="small" @click="iconView.clearIcon()" class="size-8 p-0 ml-auto rounded-full">
                     <i class="icon icon-[ic--round-close] text-lg"></i>
                 </Button>

@@ -1,6 +1,7 @@
 import {TIcon, TIconSetWithIconData} from "./types.ts";
 import {computed, reactive, ref} from "vue";
 import {defineStore} from "pinia";
+import {useTwStyle} from "./useTwStyle";
 
 export const animationTypes = [
     {value: '-', label: 'none'},
@@ -98,6 +99,13 @@ export const useIconView = defineStore('iconView', () => {
         collection.value = undefined
     }
 
+    const asTwClass = computed(() => {
+        return toTwClass({
+            icon: icon.value,
+            collection: collection.value
+        });
+    })
+
     return {
         options,
         icon,
@@ -106,8 +114,24 @@ export const useIconView = defineStore('iconView', () => {
         asSvgHtml,
         asSpan,
         asI,
+        asTwClass,
         svgStyleOnTheFly,
         setIcon,
         clearIcon
     }
 })
+
+
+let twStyle: ReturnType<typeof useTwStyle>
+export function toTwClass(ic?: {icon?: {id: string}, collection?: {id: string}}) {
+    if(!twStyle)
+        twStyle = useTwStyle()
+    if(!ic || !ic.icon || !ic.collection) return '';
+    if(twStyle.value == 'icon-[set--icon]'){
+        return `icon-[${ic.collection.id}--${ic.icon.id}]`
+    }
+    if(twStyle.value == 'icon-set--icon'){
+        return `icon-${ic.collection.id}--${ic.icon.id}`
+    }
+    return ''
+}

@@ -6,11 +6,12 @@ import {twMerge} from "tailwind-merge";
 import {useFavSets} from "./utils/useFavSets.ts";
 import IconInfo from "./components/IconInfo.vue";
 import InputText from "./components/InputText.vue";
-import {Button, Toast} from "primevue";
+import {Button, Toast, Select} from "primevue";
 import IconBox from "./components/IconBox.vue";
 import ModalFavSets from "./components/ModalFavSets.vue";
 import {useIconView} from "./utils/useIconView.ts";
 import ModalFavIcons from "./components/ModalFavIcons.vue";
+import {tailwindTypes, useTwStyle} from "./utils/useTwStyle";
 
 const query = ref('load')
 const res = ref<TSearchResultWithIconData>()
@@ -100,6 +101,8 @@ function selectIcon(icon: TIcon) {
     iconView.setIcon(icon, res.value!.collections.find(c => c.data.icons.includes(icon))!)
     console.log(selection.value)
 }
+
+const twStyle = useTwStyle();
 </script>
 
 <template>
@@ -109,7 +112,9 @@ function selectIcon(icon: TIcon) {
             <Button type="submit" severity="secondary" size="small">Search</Button>
             <span>{{ res?.total }}</span>
         </form>
-        <div class="absolute right-4 top-3 flex gap-2">
+        <div class="absolute right-4 top-3 flex gap-2 items-center">
+            <span>Tw-Style:</span>
+            <Select :options="tailwindTypes as any" v-model="twStyle.value" input-class="!py-0.5" />
             <Button severity="info" size="small" @click="showFavIconsModal = true">fav icons</Button>
             <Button severity="info" size="small" @click="showFavSetsModal = true">fav sets</Button>
         </div>

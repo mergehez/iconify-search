@@ -46,7 +46,7 @@ export const useIconView = defineStore('iconView', () => {
     function asCss(tag: 'span' | 'i') {
         if(!icon.value || !collection.value) return '';
 
-        let cls = `icon icon-[${collection.value.id}--${icon.value.id}]`
+        let cls = `icon ` + asTwClass.value
         // const sizeClass = options.twSize && options.twSize != 'none' ? ` ${options.twSize}` : '';
         // const sizeClass = options.twSize && options.twSize != 'none' ? ` ${options.twSize}` : '';
         let ws = '', we = '';
@@ -65,6 +65,8 @@ export const useIconView = defineStore('iconView', () => {
         return ws + `<${tag} class="${cls}"></${tag}>` + we
     }
 
+    const twStyle = useTwStyle()
+
     const asSpan = computed(() => asCss('span'))
     const asI = computed(() => asCss('i'))
     const svgStyleOnTheFly = computed(() => {
@@ -74,7 +76,9 @@ export const useIconView = defineStore('iconView', () => {
             .replace(/\(/g, '%28') // Encode parentheses
             .replace(/\)/g, '%29');
 
-        let res = `.icon-\\[${collection.value.id}--${icon.value.id}\\] {
+        const className = asTwClass.value.replace(/\[/g, '\\[').replace(/]/g, '\\]')
+
+        let res = `.${className} {
             --svg: url(data:image/svg+xml;utf8,${encodedSvg});
             font-size: 1em;
           }`;
@@ -103,7 +107,7 @@ export const useIconView = defineStore('iconView', () => {
         return toTwClass({
             icon: icon.value,
             collection: collection.value
-        });
+        }, twStyle);
     })
 
     return {
@@ -123,9 +127,9 @@ export const useIconView = defineStore('iconView', () => {
 
 
 let twStyle: ReturnType<typeof useTwStyle>
-export function toTwClass(ic?: {icon?: {id: string}, collection?: {id: string}}) {
+export function toTwClass(ic?: {icon?: {id: string}, collection?: {id: string}}, _twStyle?: ReturnType<typeof useTwStyle>) {
     if(!twStyle)
-        twStyle = useTwStyle()
+        twStyle = _twStyle ?? useTwStyle()
     if(!ic || !ic.icon || !ic.collection) return '';
     if(twStyle.value == 'icon-[set--icon]'){
         return `icon-[${ic.collection.id}--${ic.icon.id}]`

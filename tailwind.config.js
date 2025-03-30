@@ -1,5 +1,5 @@
 import primeui from 'tailwindcss-primeui'
-import {addDynamicIconSelectors} from "@iconify/tailwind";
+import {addDynamicIconSelectors} from "./tailwind-iconify";
 
 /** @type {import('tailwindcss').Config} */
 export default {

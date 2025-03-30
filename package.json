@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
-    "@iconify/tailwind": "^1.2.0",
     "@mergehez/vue-color-picker": "^0.0.5",
     "@tailwindcss/postcss": "^4.0.14",
     "ky": "^1.7.5",
